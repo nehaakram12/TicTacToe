@@ -1,5 +1,6 @@
 package model;
 
+import javax.swing.JOptionPane;
 import view.*;
 
 public class Model {
@@ -8,11 +9,14 @@ public class Model {
     private int movesCount;
     private char[][] board;
     private String message;
+    String playerName1, playerName2;
 
     public Model() {
         this.board = new char[3][3];
         this.movesCount = 0;
         this.turn = 1;
+        playerName1= JOptionPane.showInputDialog("Please input name for Player 1: ");
+        playerName2 = JOptionPane.showInputDialog("Please input name for Player 2: ");
     }
 
     public void registerView(View v) {
@@ -29,7 +33,10 @@ public class Model {
             board[x][y] = symbol;
             movesCount=movesCount+1;
             if(isWinner(x, y,symbol)) {
-                message="Player " + turn + " has won!";
+                if (symbol=='X')
+                    message=playerName1+" : Player " + turn + " has won!";
+                else if (symbol=='O')
+                    message=playerName2+" : Player " + turn + " has won!";
                 v.update(x, y, board[x][y], message,true);
             }
             else if(movesCount==9) {
@@ -39,11 +46,11 @@ public class Model {
             else {
                 if(turn%2 != 0) {
                     turn=2;
-                    message="Player 2's turn: O";
+                    message=playerName2+" :Player 2's turn: O";
                 }
                 else {
                     turn=1;
-                    message="Player 1's turn ; X";
+                    message=playerName1+" Player 1's turn ; X";
                 }
                 v.update(x, y, board[x][y], message,false);
             }
